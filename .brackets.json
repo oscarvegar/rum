@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "C:/Users/ovegar/Desktop/LN2013/inedata/tasks/register/linkAssetsBuild.js",
+        "C:/Users/ovegar/Desktop/LN2013/inedata/config/env/development.js",
+        "C:/Users/ovegar/Desktop/LN2013/inedata/api/controllers/PersonController.js"
+    ]
+}
