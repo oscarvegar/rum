@@ -119,6 +119,10 @@ module.exports = {
 	},
 	
 	'export': function(req,res) {
+        var quitacomas = function(str){
+            str = str.replace(/,/g, '');
+            return str;
+        };
 		var cve = (req.param('alfaClaveElectoral'));
 		var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 		var respuesta = 'APELLIDO PATERNO\tAPELLINO MATERNO\tNOMBRE\tCLAVE_ELECTORAL\tOCR\tCALLE\tNUMERO_EXTERIOR\tCOLONIA\tCODIGO_POSTAL\tDELEGACION\tOCUPACION\tFOLIO_NACIONAL\tENTIDAD\tDISTRITO\tMUNICIPIO\tSECCION\tLOCALIDAD\tMANZANA\tCONSECUTIVO\tES_GEMELO\tTELEFONO_CASA\tCELULAR\tEMAIL\tFACEBOOK\tTWITTER\tESTADO_CIVIL\tTELEFONO_OFICINA\tNEXTEL\tSECTOR_ORGANIZACION\tCARGO_ACTUAL\tTIPO_ASAMBLEA\tCOMISION_POLITICA_PERMANENTE\tTIPO_DIRIGENCIA\tTIPO_JUSTICIA_PARTIDARIA\tTIPO_DEFENSORIA\tASAMBLEAS;DIRIGENCIAS';
@@ -165,7 +169,9 @@ module.exports = {
                 
 				
 			};
-			res.end((respuesta));
+            respuesta = quitacomas(respuesta);
+            console.log(respuesta);
+			res.end(respuesta);
 		});
 	}
 	
