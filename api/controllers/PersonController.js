@@ -121,46 +121,47 @@ module.exports = {
 	'export': function(req,res) {
 		var cve = (req.param('alfaClaveElectoral'));
 		var mongoClient = require('mongodb').MongoClient,format = require('util').format;
-		var respuesta = 'APELLIDO PATERNO;APELLINO MATERNO;NOMBRE;CLAVE ELECTORAL;OCR;CALLE;NUMERO_EXTERIOR;COLONIA;CODIGO_POSTAL;DELEGACION;OCUPACION;FOLIO_NACIONAL;ENTIDAD;DISTRITO;MUNICIPIO;SECCION;LOCALIDAD;MANZANA;CONSECUTIVO;ES_GEMELO;TELEFONO_CASA;CELULAR;EMAIL;FACEBOOK;TWITTER;ESTADO_CIVIL;TELEFONO_OFICINA;NEXTEL;SECTOR_ORGANIZACION;CARGO_ACTUAL;TIPO_ASAMBLEA;COMISION_POLITICA_PERMANENTE;TIPO_DIRIGENCIA;TIPO_JUSTICIA_PARTIDARIA;TIPO_DEFENSORIA;';
+		var respuesta = 'APELLIDO PATERNO\tAPELLINO MATERNO\tNOMBRE\tCLAVE_ELECTORAL\tOCR\tCALLE\tNUMERO_EXTERIOR\tCOLONIA\tCODIGO_POSTAL\tDELEGACION\tOCUPACION\tFOLIO_NACIONAL\tENTIDAD\tDISTRITO\tMUNICIPIO\tSECCION\tLOCALIDAD\tMANZANA\tCONSECUTIVO\tES_GEMELO\tTELEFONO_CASA\tCELULAR\tEMAIL\tFACEBOOK\tTWITTER\tESTADO_CIVIL\tTELEFONO_OFICINA\tNEXTEL\tSECTOR_ORGANIZACION\tCARGO_ACTUAL\tTIPO_ASAMBLEA\tCOMISION_POLITICA_PERMANENTE\tTIPO_DIRIGENCIA\tTIPO_JUSTICIA_PARTIDARIA\tTIPO_DEFENSORIA\tASAMBLEAS;DIRIGENCIAS';
 		db.collection('person').find({"registrado":1}).toArray(function(err,pers){
 			res.setHeader("Content-Encoding", "UTF-8");
 			res.setHeader("Content-Type", "text/csv; charset=UTF-8");
-			res.setHeader("Content-Disposition", "attachment; filename=Encuestados.csv");
+			res.setHeader("Content-Disposition", "attachment; filename=Militantes.csv");
 			for(var i=0;i<pers.length;i++){
 				var curr = pers[i];
 				var cve = curr.claveCompleta;
 				var ocr = curr.seccion.toString()+curr.consecutivo.toString();
-				respuesta += "\n"+curr.apellidoPaterno+";"+curr.apellidoMaterno+";"+curr.nombre+";"+cve+";\'"+ocr+";"
-                +curr.calle+";"
-                +curr.numeroExterior+";"
-                +curr.colonia+";"
-                +curr.codigoPostal+";"
-                +curr.descripcionGeoreferencia+";"
-                +curr.ocupacion+";"
-                +curr.folioNacional+";"
-                +curr.entidad+";"
-                +curr.distrito+";"
-                +curr.municipio+";"
-                +curr.seccion+";"
-                +curr.localidad+";"
-                +curr.manzana+";"
-                +curr.consecutivo+";"
-                +curr.gemelo+";"
-                +curr.telefonoCasa+";"
-                +curr.celular+";"
-                +curr.email+";"
-                +curr.facebook+";"
-                +curr.twitter+";"
-                +curr.estadoCivil+";"
-                +curr.telefonoOficina+";"
-                +curr.nextel+";"
-                +curr.sectorOrganizacion+";"
-                +curr.cargoActual+";"
-                +curr.tipoAsamblea+";"
-                +curr.compolper+";"
-                +curr.tipoDirigencia+";"
-                +curr.tipoJusticiaPartidaria+";"
+				respuesta += "\n"+curr.apellidoPaterno+"\t"+curr.apellidoMaterno+"\t"+curr.nombre+"\t"+cve+"\t\'"+ocr+"\t"
+                +curr.calle+"\t"
+                +curr.numeroExterior+"\t"
+                +curr.colonia+"\t"
+                +curr.codigoPostal+"\t"
+                +curr.descripcionGeoreferencia+"\t"
+                +curr.ocupacion+"\t"
+                +curr.folioNacional+"\t"
+                +curr.entidad+"\t"
+                +curr.distrito+"\t"
+                +curr.municipio+"\t"
+                +curr.seccion+"\t"
+                +curr.localidad+"\t"
+                +curr.manzana+"\t"
+                +curr.consecutivo+"\t"
+                +curr.gemelo+"\t"
+                +curr.telefonoCasa+"\t"
+                +curr.celular+"\t"
+                +curr.email+"\t"
+                +curr.facebook+"\t"
+                +curr.twitter+"\t"
+                +curr.estadoCivil+"\t"
+                +curr.telefonoOficina+"\t"
+                +curr.nextel+"\t"
+                +curr.sectorOrganizacion+"\t"
+                +curr.cargoActual+"\t"
+                +curr.tipoAsamblea+"\t"
+                +curr.compolper+"\t"
+                +curr.tipoDirigencia+"\t"
+                +curr.tipoJusticiaPartidaria+"\t"
                 +curr.tipoDefensoria; 
+                //for(var as in curr.asambleas
                 
 				
 			};
