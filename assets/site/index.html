@@ -207,7 +207,7 @@
                                 
                                 <label for="" class="col-sm-1 control-label">Celular</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. alguien@example.com" ng-model="selectedPerson.email">
+                                    <input type="text" class="form-control" placeholder="Ej. 5554443322" ng-model="selectedPerson.celular">
                                 </div>
                                 
                                 <label for="" class="col-sm-1 control-label">Correo Electrónico</label>
@@ -220,14 +220,14 @@
                             <div class="form-group" ng-if="tipoRegistro==3">
                                 <label for="" class="col-sm-1 control-label">Telefono de Oficina</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control"  required pattern="\d*" placeholder="Ej. 5554443322" ng-model="selectedPerson.telefonoCasa">
+                                    <input type="text" class="form-control"  required pattern="\d*" placeholder="Ej. 5554443322" ng-model="selectedPerson.telefonoOficina">
                                 </div>
                                 
                                 
                                 
                                 <label for="" class="col-sm-1 control-label">Nextel</label>
                                 <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. alguien@example.com" ng-model="selectedPerson.email">
+                                    <input type="text" class="form-control" placeholder="Ej. alguien@example.com" ng-model="selectedPerson.nextel">
                                 </div>
                                 
                                 
@@ -248,9 +248,9 @@
                             <div class="form-group">
                                 <label for="" class="col-sm-1 control-label">Estado Civil</label>
                                 <div class="col-sm-2">
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="SOL">Soltero&nbsp;&nbsp;
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="CAS">Casado&nbsp;&nbsp;
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="UNI">Union Libre&nbsp;&nbsp;
+                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="SOLTERO">Soltero&nbsp;&nbsp;
+                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="CASADO">Casado&nbsp;&nbsp;
+                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="UNION LIBRE">Union Libre&nbsp;&nbsp;
                                 </div>
                             </div>
                             <div class="row"/>
@@ -260,15 +260,15 @@
                                     <select ng-model="selectedPerson.sectorOrganizacion" class="form-control">
                                         
                                         <optgroup label="Organizaciones">
-                                            <option value=1>MOVIMIENTO TERRITORIAL</option>
-                                            <option value=2>ORGANISMO NACIONAL DE MUJERES PRIISTAS</option>
-                                            <option value=3>RED JÓVENES POR MÉXICO</option>
-                                            <option value=3>ASOCIACIÓN NACIONAL DE LA UNIDAD REVOLUCIONARIA, A.C.</option>
+                                            <option value="MOVIMIENTO TERRITORIAL">MOVIMIENTO TERRITORIAL</option>
+                                            <option value="ORGANISMO NACIONAL DE MUJERES PRIISTAS">ORGANISMO NACIONAL DE MUJERES PRIISTAS</option>
+                                            <option value="RED JÓVENES POR MÉXICO">RED JÓVENES POR MÉXICO</option>
+                                            <option value="ASOCIACIÓN NACIONAL DE LA UNIDAD REVOLUCIONARIA, A.C.">ASOCIACIÓN NACIONAL DE LA UNIDAD REVOLUCIONARIA, A.C.</option>
                                         </optgroup>
                                         <optgroup label="Sectores">
-                                            <option value=4>SECTOR AGRARIO</option>
-                                            <option value=5>SECTOR OBRERO</option>
-                                            <option value=6>SECTOR POPULAR</option>
+                                            <option value="SECTOR AGRARIO">SECTOR AGRARIO</option>
+                                            <option value="SECTOR OBRERO">SECTOR OBRERO</option>
+                                            <option value="SECTOR POPULAR">SECTOR POPULAR</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -277,9 +277,9 @@
                                 <div class="col-sm-2">
                                     <select ng-model="selectedPerson.cargoActual" class="form-control" placeholder="Selecciona...">
                                         
-                                            <option value=1>CARGO UNO</option>
-                                            <option value=2>CARGO DOS</option>
-                                            <option value=3>CARGO TRES</option>
+                                            <option value="CARGO UNO">CARGO UNO</option>
+                                            <option value="CARGO DOS">CARGO DOS</option>
+                                            <option value="CARGO TRES">CARGO TRES</option>
                                         
                                     </select>
                                 </div>
@@ -298,10 +298,10 @@
                                 <div class="row"></div>
                                 <label for="" class="col-sm-1 control-label">Asamblea</label>
                                 <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="0">Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="1">Estatal/DF
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="2">Municipal/Delegacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="3">Seccional
+                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Nacional">Nacional
+                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Estatal/DF">Estatal/DF
+                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Municipal/Delegacional">Municipal/Delegacional
+                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Seccional">Seccional
                                 </div>
                                 
                                 <div ng-repeat="asa in selectedPerson.asambleas">
@@ -323,9 +323,9 @@
                                 
                                 <label for="" class="col-sm-1 control-label">Consejo Politico</label>
                                 <div class="col-sm-10"><br>
-                                    <input type="radio"  value="0">Nacional
-                                    <input type="radio"  value="0">Estatal/DF
-                                    <input type="radio"  value="0">Municipal/Delegacional
+                                    <input type="radio"  value="Nacional">Nacional
+                                    <input type="radio"  value="Estatal/DF">Estatal/DF
+                                    <input type="radio"  value="Municipal/Delegacional">Municipal/Delegacional
                                 </div>
                                 
                                 <div class="row"></div>
@@ -345,9 +345,9 @@
                                 <div class="row"></div>
                                 <label for="" class="col-sm-1 control-label">Dirigencia</label>
                                 <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="0">Comité Directivo Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="1">Comité Directivo Estatal/DF
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="2">Comité Directivo
+                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Nacional">Comité Directivo Nacional
+                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Estatal/DF">Comité Directivo Estatal/DF
+                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Municipal/Delegacional">Comité Directivo Municipal/Delegacional
                                 </div>
                                 
                                 <div ng-repeat="asa in selectedPerson.dirigencias">
@@ -376,15 +376,15 @@
                                 <div class="row"></div>
                                 <label for="" class="col-sm-1 control-label">Justicia Partidaria</label>
                                 <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="0">Comisión Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="1">Comision Estatal/DF
+                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="Comisión Nacional">Comisión Nacional
+                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="Comision Estatal/DF">Comision Estatal/DF
                                 </div>
                                 
                                 <div class="row"></div>
                                 <label for="" class="col-sm-1 control-label">Defensoría de los derechos de los militantes</label>
                                 <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="0">Defensoría Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="1">Defensoría Estatal/DF
+                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="Defensoría Nacional">Defensoría Nacional
+                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="Defensoría Estatal/DF">Defensoría Estatal/DF
                                 </div>
                             </div>
                             

@@ -57,14 +57,16 @@ function personController($scope,$http) {
     
 	$scope.registrar = function(){
 		$scope.selectedPerson.registrado = 1;
-        alert(JSON.stringify($scope.selectedPerson))
-		/*$http.post('/person/'+person._id,person)
+        if($scope.tipoRegistro==1)$scope.selectedPerson.tipoRegistro = "MILITANTE";
+        if($scope.tipoRegistro==2)$scope.selectedPerson.tipoRegistro = "CUADRO";
+        if($scope.tipoRegistro==3)$scope.selectedPerson.tipoRegistro = "DIRIGENTE";
+		$http.post('/person/'+$scope.selectedPerson._id,$scope.selectedPerson)
 			.then(function (res) {
 				alert("Se Ha Registrado con Éxito");
 				$scope.personQuery.alfaClaveElectoral = null;
 				$scope.persons = null;
 				$scope.buscar();
-			  });*/
+			  });
 	};
 	
 	$scope.loadCreate = function(){

@@ -6,7 +6,8 @@
  */
 var fs = require('fs'),
     readline = require('readline'),
-	moment = require('moment');
+	moment = require('moment'),
+    utf8 = require('utf8');
 	var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 	var db;
 	mongoClient.connect('mongodb://localhost:27017/inedata',function(err,ldb){
@@ -121,26 +122,50 @@ module.exports = {
 	'export': function(req,res) {
 		var cve = (req.param('alfaClaveElectoral'));
 		var mongoClient = require('mongodb').MongoClient,format = require('util').format;
-		var respuesta = 'APELLIDO PATERNO;APELLINO MATERNO;NOMBRE;CLAVE ELECTORAL;OCR';
-		db.collection('person').find({"registrado":1},
-		{id:1,nombre:1,apellidoPaterno:1,apellidoMaterno:1,fechaNaciClaveElectoral:1,registrado:1
-		,lugarNacimiento:1,sexo:1,digitoVerificador:1,claveHomonima:1,alfaClaveElectoral:1,seccion:1,consecutivo:1}).toArray(function(err,pers){
-			res.setHeader('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		var respuesta = 'APELLIDO PATERNO;APELLINO MATERNO;NOMBRE;CLAVE ELECTORAL;OCR;CALLE;NUMERO_EXTERIOR;COLONIA;CODIGO_POSTAL;DELEGACION;OCUPACION;FOLIO_NACIONAL;ENTIDAD;DISTRITO;MUNICIPIO;SECCION;LOCALIDAD;MANZANA;CONSECUTIVO;ES_GEMELO;TELEFONO_CASA;CELULAR;EMAIL;FACEBOOK;TWITTER;ESTADO_CIVIL;TELEFONO_OFICINA;NEXTEL;SECTOR_ORGANIZACION;CARGO_ACTUAL;TIPO_ASAMBLEA;COMISION_POLITICA_PERMANENTE;TIPO_DIRIGENCIA;TIPO_JUSTICIA_PARTIDARIA;TIPO_DEFENSORIA;';
+		db.collection('person').find({"registrado":1}).toArray(function(err,pers){
+			res.setHeader("Content-Encoding", "UTF-8");
+			res.setHeader("Content-Type", "text/csv; charset=UTF-8");
 			res.setHeader("Content-Disposition", "attachment; filename=Encuestados.csv");
 			for(var i=0;i<pers.length;i++){
 				var curr = pers[i];
-				var cve = curr.alfaClaveElectoral
-							+ curr.fechaNaciClaveElectoral
-							+ curr.lugarNacimiento
-							+ curr.sexo
-							+ curr.digitoVerificador
-							+ curr.claveHomonima;
+				var cve = curr.claveCompleta;
 				var ocr = curr.seccion.toString()+curr.consecutivo.toString();
-				respuesta += "\n"+curr.apellidoPaterno+";"+curr.apellidoMaterno+";"+curr.nombre+";"+cve+";\'"+ocr;
+				respuesta += "\n"+curr.apellidoPaterno+";"+curr.apellidoMaterno+";"+curr.nombre+";"+cve+";\'"+ocr+";"
+                +curr.calle+";"
+                +curr.numeroExterior+";"
+                +curr.colonia+";"
+                +curr.codigoPostal+";"
+                +curr.descripcionGeoreferencia+";"
+                +curr.ocupacion+";"
+                +curr.folioNacional+";"
+                +curr.entidad+";"
+                +curr.distrito+";"
+                +curr.municipio+";"
+                +curr.seccion+";"
+                +curr.localidad+";"
+                +curr.manzana+";"
+                +curr.consecutivo+";"
+                +curr.gemelo+";"
+                +curr.telefonoCasa+";"
+                +curr.celular+";"
+                +curr.email+";"
+                +curr.facebook+";"
+                +curr.twitter+";"
+                +curr.estadoCivil+";"
+                +curr.telefonoOficina+";"
+                +curr.nextel+";"
+                +curr.sectorOrganizacion+";"
+                +curr.cargoActual+";"
+                +curr.tipoAsamblea+";"
+                +curr.compolper+";"
+                +curr.tipoDirigencia+";"
+                +curr.tipoJusticiaPartidaria+";"
+                +curr.tipoDefensoria; 
+                
 				
 			};
-			console.log(respuesta);
-			res.end(respuesta);
+			res.end((respuesta));
 		});
 	}
 	
