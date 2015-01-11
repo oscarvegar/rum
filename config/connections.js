@@ -63,6 +63,14 @@ module.exports.connections = {
     // user: 'username',
     // password: 'password',
      database: 'inedata'
+  }
+  rumProd: {
+    adapter: 'sails-mongo',
+    host: 'localhost',
+    port: 27017,
+    // user: 'username',
+    // password: 'password',
+     database: 'precision'
   },
 
   /***************************************************************************
