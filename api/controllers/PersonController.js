@@ -9,7 +9,7 @@ var fs = require('fs'),
 	moment = require('moment');
 	var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 	var db;
-	mongoClient.connect('mongodb://localhost:27017/inedata',function(err,ldb){
+	mongoClient.connect('mongodb://localhost:27017/prd_precision',function(err,ldb){
 	
 		if(err) throw err;
 		db = ldb;
