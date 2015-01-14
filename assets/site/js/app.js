@@ -106,6 +106,14 @@ function personController($scope,$http) {
 		});
 		
 	};
+
+	$scope.localizarPersona = function(person){
+		console.log(person);
+		$http.post('/person/localizar/'+person["_id"]).success(function(data) {
+			console.log(data)
+			
+		});
+	}
 	
 	
 }

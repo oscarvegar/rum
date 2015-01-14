@@ -6,10 +6,11 @@
  */
 var fs = require('fs'),
     readline = require('readline'),
-	moment = require('moment');
+	moment = require('moment'),
+	Levenshtein = require('levenshtein');
 	var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 	var db;
-	mongoClient.connect('mongodb://localhost:27017/prd_precision',function(err,ldb){
+	mongoClient.connect('mongodb://localhost:27017/inedata',function(err,ldb){
 	
 		if(err) throw err;
 		db = ldb;
@@ -115,6 +116,64 @@ module.exports = {
 				console.log(pers);
 				res.json(pers)
 			});
+		
+	},
+
+	'localizar': function(req, res) {
+		console.log(req.allParams())
+		var cve = (req.param('id'));
+		if(cve==null)return res.json(405);
+	  	console.log("SECCION >>>>>>");
+	  	console.log(cve);
+	  	Person.findOne({id:cve}).exec(function(err,per){
+	  		console.log(per);
+	  		console.log(per.seccion);
+
+	  		Lot.find({"SECCION":per.seccion}).exec(function(err,data){
+	  			console.log("LOTES>>>>>");
+	  			console.log(data);
+	  			var posiblesDirecciones = [];
+	  			var distanciaMenor = null;
+	  			for(i in data){
+	  				console.log(">>>>> "+data[i].Nombre_Calle)
+	  				var lev = new Levenshtein(data[i].Nombre_Calle,per.calle);
+	  				var dist = lev.distance
+	  				console.log(dist);
+	  				if(distanciaMenor == null || dist < distanciaMenor){
+	  					distanciaMenor = lev.distance;
+	  					posiblesDirecciones = [];
+	  				 	posiblesDirecciones.push(data[i])
+	  				}else if(dist == distanciaMenor){
+	  					posiblesDirecciones.push(data[i])
+	  				}
+	  			}
+	  			console.log("NUMEROS >>>>>")
+	  			distanciaMenor = null;
+	  			var posiblesNumeros = [];
+	  			for(var i in posiblesDirecciones){
+  					lev = new Levenshtein(data[i].Num_Exterior,per.numeroExterior);
+  					dist = lev.distance
+  					if(distanciaMenor == null || dist < distanciaMenor){
+	  					distanciaMenor = lev.distance;
+	  					posiblesNumeros = [];
+	  					console.log("CREAR ARRAY NEW VALUE>>>>> "+data[i].Cve_Predial)
+	  					posiblesNumeros.push(data[i]);
+	  				}else if(dist == distanciaMenor){
+	  					
+	  					for(var j in posiblesNumeros){
+	  						if(posiblesNumeros[j].Cve_Predial == data[i].Cve_Predial && data[i].Num_Exterior != per.numeroExterior){
+  								
+  								console.log("ADDING>>>>> "+ posiblesNumeros[j].Cve_Predial +"   >>>>>   "+data[i].Cve_Predial)
+  								console.log("ADDING>>>>> "+ data[i].Num_Exterior +"   >>>>>   "+per.numeroExterior)
+	  							posiblesNumeros.push(data[i]);
+	  						}
+	  					}
+	  					
+	  				}
+	  			}
+	  			return res.json(posiblesNumeros);
+	  		})
+	  	});
 		
 	},
 	
