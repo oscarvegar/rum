@@ -620,7 +620,10 @@ body {
       margin-right:0px !important;
    }
 }
-
+.map {
+        height: 400px;
+        width: 100%;
+      }
 /* Desktop */
 
 @media (max-width: 991px){

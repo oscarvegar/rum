@@ -9,6 +9,8 @@ function personController($scope,$http) {
     $scope.showformRegistro = false;
     $scope.tipoRegistro = 0;
 	
+
+
 	$scope.buscar = function(){
 		if($scope.personQuery.alfaClaveElectoral==null || 
 			$scope.personQuery.alfaClaveElectoral.length < 6)
@@ -108,12 +110,39 @@ function personController($scope,$http) {
 	};
 
 	$scope.localizarPersona = function(person){
-		console.log(person);
-		$http.post('/person/localizar/'+person["_id"]).success(function(data) {
+		console.log(person);	
+		$http.post('/person/localizar/'+person["id"]).success(function(data) {
 			console.log(data)
-			
+			console.log(data.properties.CVEPREDIAL)
+			document.getElementById('map').innerHTML="";
+			var map = new ol.Map({
+	        target: 'map',
+	        layers: [
+	          new ol.layer.Tile({
+	            source: new ol.source.MapQuest({layer: 'osm'})
+	          }),
+	           new ol.layer.Tile({
+	            title: "Global Imagery",
+	            source: new ol.source.TileWMS({
+	              url: 'http://atomicware.mx:8080/geoserver/opengeo/wms',
+	              params: {'LAYERS':'opengeo:Cat_31_Cuau0','CQL_FILTER':"CVEPREDIAL = '"+data.properties.CVEPREDIAL+"'"}
+	            })
+	          })
+	        ],
+	        view: new ol.View({
+	          center: ol.proj.transform([-99.1324754,19.4326804], 'EPSG:4326', 'EPSG:3857'),
+	          zoom: 13
+	        })
+	      });
+
 		});
+
+
+		
 	}
 	
 	
 }
+
+                 
+                 map.addLayer(ccounties);

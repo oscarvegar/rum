@@ -56,15 +56,15 @@ module.exports.connections = {
   * Run: npm install sails-mongo                                             *
   *                                                                          *
   ***************************************************************************/
-  someMongodbServer: {
+  dev_rum: {
     adapter: 'sails-mongo',
     host: 'localhost',
     port: 27017,
     // user: 'username',
     // password: 'password',
-     database: 'inedata'
+     database: 'dev_precision'
   },
-  rumProd: {
+  prod_rum: {
     adapter: 'sails-mongo',
     host: 'localhost',
     port: 27017,

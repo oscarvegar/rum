@@ -7,14 +7,15 @@
 var fs = require('fs'),
     readline = require('readline'),
 	moment = require('moment'),
+	http = require('http'), 
 	Levenshtein = require('levenshtein');
-	var mongoClient = require('mongodb').MongoClient,format = require('util').format;
+	/*var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 	var db;
 	mongoClient.connect('mongodb://localhost:27017/inedata',function(err,ldb){
 	
 		if(err) throw err;
 		db = ldb;
-	});
+	});*/
 		
 	
 module.exports = {
@@ -106,76 +107,20 @@ module.exports = {
 		var cve = (req.param('alfaClaveElectoral'));
 	   var p1 = cve.substr(0,6);
 	   //var p2 = cve.substr(6,12);
-		var mongoClient = require('mongodb').MongoClient,format = require('util').format;
+		//var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 		
         console.log(p1);
        // console.log(p2);
-			db.collection('person').find({"alfaClaveElectoral":p1},
+			Person.find({"alfaClaveElectoral":p1},
 			//db.collection('person').find({"alfaClaveElectoral":p1,"fechaNaciClaveElectoral":(p2+"")},
-			{id:1,nombre:1,apellidoPaterno:1,apellidoMaterno:1,fechaNaciClaveElectoral:1,registrado:1,lugarNacimiento:1,sexo:1,digitoVerificador:1,claveHomonima:1,alfaClaveElectoral:1,fechaNaciClaveElectoral:1}).toArray(function(err,pers){
+			{id:1,nombre:1,apellidoPaterno:1,apellidoMaterno:1,fechaNaciClaveElectoral:1,registrado:1,lugarNacimiento:1,sexo:1,digitoVerificador:1,claveHomonima:1,alfaClaveElectoral:1,fechaNaciClaveElectoral:1}).exec(function(err,pers){
 				console.log(pers);
 				res.json(pers)
 			});
 		
 	},
 
-	'localizar': function(req, res) {
-		console.log(req.allParams())
-		var cve = (req.param('id'));
-		if(cve==null)return res.json(405);
-	  	console.log("SECCION >>>>>>");
-	  	console.log(cve);
-	  	Person.findOne({id:cve}).exec(function(err,per){
-	  		console.log(per);
-	  		console.log(per.seccion);
-
-	  		Lot.find({"SECCION":per.seccion}).exec(function(err,data){
-	  			console.log("LOTES>>>>>");
-	  			console.log(data);
-	  			var posiblesDirecciones = [];
-	  			var distanciaMenor = null;
-	  			for(i in data){
-	  				console.log(">>>>> "+data[i].Nombre_Calle)
-	  				var lev = new Levenshtein(data[i].Nombre_Calle,per.calle);
-	  				var dist = lev.distance
-	  				console.log(dist);
-	  				if(distanciaMenor == null || dist < distanciaMenor){
-	  					distanciaMenor = lev.distance;
-	  					posiblesDirecciones = [];
-	  				 	posiblesDirecciones.push(data[i])
-	  				}else if(dist == distanciaMenor){
-	  					posiblesDirecciones.push(data[i])
-	  				}
-	  			}
-	  			console.log("NUMEROS >>>>>")
-	  			distanciaMenor = null;
-	  			var posiblesNumeros = [];
-	  			for(var i in posiblesDirecciones){
-  					lev = new Levenshtein(data[i].Num_Exterior,per.numeroExterior);
-  					dist = lev.distance
-  					if(distanciaMenor == null || dist < distanciaMenor){
-	  					distanciaMenor = lev.distance;
-	  					posiblesNumeros = [];
-	  					console.log("CREAR ARRAY NEW VALUE>>>>> "+data[i].Cve_Predial)
-	  					posiblesNumeros.push(data[i]);
-	  				}else if(dist == distanciaMenor){
-	  					
-	  					for(var j in posiblesNumeros){
-	  						if(posiblesNumeros[j].Cve_Predial == data[i].Cve_Predial && data[i].Num_Exterior != per.numeroExterior){
-  								
-  								console.log("ADDING>>>>> "+ posiblesNumeros[j].Cve_Predial +"   >>>>>   "+data[i].Cve_Predial)
-  								console.log("ADDING>>>>> "+ data[i].Num_Exterior +"   >>>>>   "+per.numeroExterior)
-	  							posiblesNumeros.push(data[i]);
-	  						}
-	  					}
-	  					
-	  				}
-	  			}
-	  			return res.json(posiblesNumeros);
-	  		})
-	  	});
-		
-	},
+	
 	
 	'export': function(req,res) {
         var quitacomas = function(str){
@@ -183,9 +128,9 @@ module.exports = {
             return str;
         };
 		var cve = (req.param('alfaClaveElectoral'));
-		var mongoClient = require('mongodb').MongoClient,format = require('util').format;
+		//var mongoClient = require('mongodb').MongoClient,format = require('util').format;
 		var respuesta = 'APELLIDO PATERNO\tAPELLINO MATERNO\tNOMBRE\tCLAVE_ELECTORAL\tOCR\tCALLE\tNUMERO_EXTERIOR\tCOLONIA\tCODIGO_POSTAL\tDELEGACION\tOCUPACION\tFOLIO_NACIONAL\tENTIDAD\tDISTRITO\tMUNICIPIO\tSECCION\tLOCALIDAD\tMANZANA\tCONSECUTIVO\tES_GEMELO\tTELEFONO_CASA\tCELULAR\tEMAIL\tFACEBOOK\tTWITTER\tESTADO_CIVIL\tTELEFONO_OFICINA\tNEXTEL\tSECTOR_ORGANIZACION\tCARGO_ACTUAL\tTIPO_ASAMBLEA\tCOMISION_POLITICA_PERMANENTE\tTIPO_DIRIGENCIA\tTIPO_JUSTICIA_PARTIDARIA\tTIPO_DEFENSORIA\tASAMBLEAS;DIRIGENCIAS';
-		db.collection('person').find({"registrado":1}).toArray(function(err,pers){
+		Person.find({"registrado":1}).exec(function(err,pers){
 			res.setHeader("Content-Encoding", "UTF-8");
 			res.setHeader("Content-Type", "text/csv; charset=UTF-8");
 			res.setHeader("Content-Disposition", "attachment; filename=Militantes.csv");
@@ -232,6 +177,69 @@ module.exports = {
             console.log(respuesta);
 			res.end(respuesta);
 		});
+	},
+
+	'localizar':function(req,res){
+		Person.findOne({id:req.allParams().id}).exec(function(err,per){
+			var gisUrl="http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputformat=application%2Fjson";
+			var querySecciones=gisUrl+"&typeName=opengeo%3ASecciones_wgs84z14&cql_filter=SECCION=4742";
+			
+	        HttpClientService.get(querySecciones,function(data){ 
+	        	data = JSON.parse(data);
+	        	
+	        	var coordsSec = UtilService.arrayToCoords(data.features[0].geometry.coordinates[0][0]);
+	        	
+	    		//options.path= gisUrl+"&typeName=opengeo:Vialidades_wgs84z14&cql_filter=DWITHIN(the_geom,MULTIPOLYGON((("+coordsSec+"))),1,meters)";
+	        	//console.log(options.path);
+	        	HttpClientService.get("http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputformat=application%2Fjson&typeName=opengeo:Vialidades_wgs84z14\
+	        		&cql_filter=DWITHIN(the_geom,MULTIPOLYGON((("+coordsSec+"))),1,meters)",function(data){
+	        		data = JSON.parse(data);
+	        		var lowestLev = 10000;
+	        		var posiblesCalles = null;
+        			for(var i in data.features){
+        				var nombre = data.features[i].properties.NOMBRE;
+        				console.log(per.calle+">>>"+nombre )
+        				var currdistance = new Levenshtein(nombre,per.calle).distance;
+        				if(currdistance < lowestLev){
+        					lowestLev = currdistance;
+        					posiblesCalles = [];
+        					posiblesCalles.push(data.features[i])
+        				}else if(currdistance == lowestLev){
+        					posiblesCalles.push(data.features[i])
+        				}
+        			}
+        			//console.log(JSON.stringify(posiblesCalles));
+        			//for(var i in posiblesCalles){
+        				
+        				//console.log(posiblesCalles[0].geometry.coordinates[0]);
+        				var coords = UtilService.arrayToCoords(posiblesCalles[0].geometry.coordinates[0]);
+        				var queryLotes = "http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opengeo%3ACat_31_Cuau0&maxFeatures=50&outputformat=application%2Fjson\
+        				&cql_filter=DWITHIN(the_geom,MULTILINESTRING(("+coords+")),25,meters)&";
+        				HttpClientService.get(queryLotes,function(data){
+        					data = JSON.parse(data);
+        					lowestLev = 10000;
+        					var found = false;
+        					for(var i in data.features){
+        						var currentLote = data.features[i];
+        						console.log(currentLote.properties.NOEXT+" >>>>>>> "+per.numeroExterior)
+        						console.log(currentLote.properties.NOEXT==per.numeroExterior)
+        						console.log(new Levenshtein(currentLote.properties.NOEXT,per.numeroExterior).distance)
+        						if(currentLote.properties.NOEXT == per.numeroExterior){
+        							res.json(currentLote);
+        							found = true;
+        						}
+        					}
+        					if(found==false)
+        						res.json({msg:"NOT FOUND"});
+        				});
+        			//}
+	        		
+	        	});
+	        	
+	        });
+		});
+		
+
 	}
 	
 };
