@@ -216,6 +216,9 @@ module.exports = {
 
 	'localizar':function(req,res){
 		Person.findOne({id:req.allParams().id}).exec(function(err,per){
+			if(per.seccion==null){
+				return res.json(404,{msg:"PERSONA SIN SECCION"});
+			}
 			var gisUrl="http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputformat=application%2Fjson";
 			var querySecciones=gisUrl+"&typeName=opengeo%3ASecciones_wgs84z14&cql_filter=SECCION="+per.seccion;
 			
@@ -260,7 +263,7 @@ module.exports = {
         						var currentLote = data.features[i];
         						console.log(currentLote.properties.NOEXT+" >>>>>>> "+per.numeroExterior)
         						console.log(currentLote.properties.NOEXT==per.numeroExterior)
-        						console.log(new Levenshtein(currentLote.properties.NOEXT,per.numeroExterior).distance)
+        						//console.log(new Levenshtein(currentLote.properties.NOEXT,per.numeroExterior).distance)
         						if(currentLote.properties.NOEXT == per.numeroExterior){
         							res.json(currentLote);
         							found = true;
