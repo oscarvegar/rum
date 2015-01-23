@@ -29,12 +29,12 @@ angular.module('rum-militancia', [])
         if($scope.tipoRegistro==1)$scope.selectedPerson.tipoRegistro = "MILITANTE";
         if($scope.tipoRegistro==2)$scope.selectedPerson.tipoRegistro = "CUADRO";
         if($scope.tipoRegistro==3)$scope.selectedPerson.tipoRegistro = "DIRIGENTE";
-		$http.post('/person/'+$scope.selectedPerson._id,$scope.selectedPerson)
+		$http.post('/person/'+$scope.selectedPerson.id,$scope.selectedPerson)
 			.then(function (res) {
 				alert("Se Ha Registrado con Éxito");
 				$scope.personQuery.alfaClaveElectoral = null;
 				$scope.persons = null;
-				$scope.buscar();
+				$scope.$parent.buscar();
 			  });
 	};
 	
@@ -54,6 +54,8 @@ angular.module('rum-militancia', [])
 	};
 	
 	$scope.create = function(){
+		
+		
 		$scope.newPerson.claveElector = $scope.newPerson.claveElector.toUpperCase();
 		$scope.newPerson.nombre = $scope.newPerson.nombre.toUpperCase();
 		$scope.newPerson.apellidoPaterno = $scope.newPerson.apellidoPaterno.toUpperCase();
@@ -67,11 +69,12 @@ angular.module('rum-militancia', [])
 		$scope.newPerson.digitoVerificador = $scope.newPerson.claveElector.substring(15,16);
 		$scope.newPerson.claveHomonima = $scope.newPerson.claveElector.substring(16,17);
 		$scope.newPerson.consecutivo = $scope.newPerson.consecutivo.substring(3,$scope.newPerson.consecutivo.length);
+		console.log(">>>>> ANTES DE POST");
 		$http.post('/person',$scope.newPerson).success(function(data) {
 			alert("Persona creada exitosamente");
 			$scope.personQuery.alfaClaveElectoral = $scope.newPerson.alfaClaveElectoral;
 			$scope.newPerson = null;
-			$scope.buscar();
+			$scope.$parent.buscar();
 		});
 		
 	};

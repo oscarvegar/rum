@@ -129,7 +129,9 @@ module.exports = {
         };
 		var cve = (req.param('alfaClaveElectoral'));
 		//var mongoClient = require('mongodb').MongoClient,format = require('util').format;
-		var respuesta = 'APELLIDO PATERNO\tAPELLINO MATERNO\tNOMBRE\tCLAVE_ELECTORAL\tOCR\tCALLE\tNUMERO_EXTERIOR\tCOLONIA\tCODIGO_POSTAL\tDELEGACION\tOCUPACION\tFOLIO_NACIONAL\tENTIDAD\tDISTRITO\tMUNICIPIO\tSECCION\tLOCALIDAD\tMANZANA\tCONSECUTIVO\tES_GEMELO\tTELEFONO_CASA\tCELULAR\tEMAIL\tFACEBOOK\tTWITTER\tESTADO_CIVIL\tTELEFONO_OFICINA\tNEXTEL\tSECTOR_ORGANIZACION\tCARGO_ACTUAL\tTIPO_ASAMBLEA\tCOMISION_POLITICA_PERMANENTE\tTIPO_DIRIGENCIA\tTIPO_JUSTICIA_PARTIDARIA\tTIPO_DEFENSORIA\tASAMBLEAS;DIRIGENCIAS';
+
+		var respuesta = 'ID\tFechaCaptura\tTipo\tCategoria\tFechaLevantamiento\tFolio\tClaveElector\tSeccion\tNumCredencial\tFechaNacimiento\tGenero\tNombre\tPaterno\tMaterno\tCalle\tNum_Ext\tNum_Int\tCP\tEstado\tMunicipio\tColonia\tTelefono\tCorreo\tFechaAfiliacion\tOrganizacion\tCargo\tUniclave\tOperador\tHoraCaptura\tSTATUS';
+		//var respuesta = 'APELLIDO PATERNO\tAPELLINO MATERNO\tNOMBRE\tCLAVE_ELECTORAL\tOCR\tCALLE\tNUMERO_EXTERIOR\tCOLONIA\tCODIGO_POSTAL\tDELEGACION\tOCUPACION\tFOLIO_NACIONAL\tENTIDAD\tDISTRITO\tMUNICIPIO\tSECCION\tLOCALIDAD\tMANZANA\tCONSECUTIVO\tES_GEMELO\tTELEFONO_CASA\tCELULAR\tEMAIL\tFACEBOOK\tTWITTER\tESTADO_CIVIL\tTELEFONO_OFICINA\tNEXTEL\tSECTOR_ORGANIZACION\tCARGO_ACTUAL\tTIPO_ASAMBLEA\tCOMISION_POLITICA_PERMANENTE\tTIPO_DIRIGENCIA\tTIPO_JUSTICIA_PARTIDARIA\tTIPO_DEFENSORIA\tASAMBLEAS;DIRIGENCIAS';
 		Person.find({"registrado":1}).exec(function(err,pers){
 			res.setHeader("Content-Encoding", "UTF-8");
 			res.setHeader("Content-Type", "text/csv; charset=UTF-8");
@@ -138,7 +140,40 @@ module.exports = {
 				var curr = pers[i];
 				var cve = curr.claveCompleta;
 				var ocr = curr.seccion.toString()+curr.consecutivo.toString();
-				respuesta += "\n"+curr.apellidoPaterno+"\t"+curr.apellidoMaterno+"\t"+curr.nombre+"\t"+cve+"\t\'"+ocr+"\t"
+				respuesta += "\n"
+				+curr.id+"\t"
+				+moment().format('DD-MM-YYYY')+"\t"
+				+'AFILIACION'+"\t"
+				+curr.tipoRegistro+"\t"
+				+moment().format('DD-MM-YYYY')+"\t"
+				+'DEL AREA'+"\t"
+				+cve+"\t"
+				+curr.seccion+"\t"
+				+ocr+"\t"
+				+moment(curr.fechaNacimiento).format('DD-MM-YYYY')+"\t"
+				+curr.sexo+"\t"
+				+curr.nombre+"\t"
+				+curr.apellidoPaterno+"\t"
+				+curr.apellidoMaterno+"\t"
+				+curr.calle+"\t"
+				+curr.numeroExterior+"\t"
+				+curr.numeroInterior+"\t"
+				+curr.codigoPostal+"\t"
+				+'DISTRITO FEDERAL'+"\t"
+				+curr.descripcionGeoreferencia+"\t"
+				+curr.colonia+"\t"
+                +curr.celular+"\t"
+                +curr.email+"\t"
+                +moment().format('DD-MM-YYYY')+"\t"
+                +curr.sectorOrganizacion!=null?curr.sectorOrganizacion:"N/A"+"\t"
+                +curr.cargoActual!=null?curr.cargoActual:"N/A"+"\t"
+                +"N/A"+"\t"
+                +"a.melgoza"+"\t"
+                +moment().format('hh:mm:ss')+"\t"
+                +'ACTIVO';
+				/*+curr.apellidoPaterno+"\t"
+				+curr.apellidoMaterno+"\t"
+				+curr.nombre+"\t"+cve+"\t\'"+ocr+"\t"
                 +curr.calle+"\t"
                 +curr.numeroExterior+"\t"
                 +curr.colonia+"\t"
@@ -168,7 +203,7 @@ module.exports = {
                 +curr.compolper+"\t"
                 +curr.tipoDirigencia+"\t"
                 +curr.tipoJusticiaPartidaria+"\t"
-                +curr.tipoDefensoria; 
+                +curr.tipoDefensoria; */
                 //for(var as in curr.asambleas
                 
 				
