@@ -217,7 +217,7 @@ module.exports = {
 	'localizar':function(req,res){
 		Person.findOne({id:req.allParams().id}).exec(function(err,per){
 			var gisUrl="http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&maxFeatures=50&outputformat=application%2Fjson";
-			var querySecciones=gisUrl+"&typeName=opengeo%3ASecciones_wgs84z14&cql_filter=SECCION=4742";
+			var querySecciones=gisUrl+"&typeName=opengeo%3ASecciones_wgs84z14&cql_filter=SECCION="+per.seccion;
 			
 	        HttpClientService.get(querySecciones,function(data){ 
 	        	data = JSON.parse(data);
@@ -248,7 +248,7 @@ module.exports = {
         			//console.log(JSON.stringify(posiblesCalles));
         			//for(var i in posiblesCalles){
         				
-        				//console.log(posiblesCalles[0].geometry.coordinates[0]);
+        				console.log(posiblesCalles);
         				var coords = UtilService.arrayToCoords(posiblesCalles[0].geometry.coordinates[0]);
         				var queryLotes = "http://atomicware.mx:8080/geoserver/opengeo/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=opengeo%3ACat_31_Cuau0&maxFeatures=50&outputformat=application%2Fjson\
         				&cql_filter=DWITHIN(the_geom,MULTILINESTRING(("+coords+")),25,meters)&";

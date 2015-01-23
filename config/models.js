@@ -18,7 +18,7 @@ module.exports.models = {
   *                                                                          *
   ***************************************************************************/
   // connection: 'someMongodbServer'
-     connection: 'prod_rum',
+     connection: 'dev_rum',
      migrate: 'safe'
    
 
