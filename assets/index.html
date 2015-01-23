@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html ng-app="">
+<html ng-app="rumApp">
     <head>
-        <title>Bootstrap Admin Theme v3</title>
+        <title>Registro de Militancia</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -9,11 +9,9 @@
         <link href="css/styles.css" rel="stylesheet">
         <link rel="stylesheet" href="http://openlayers.org/en/v3.1.1/css/ol.css" type="text/css">
 
+        <link href="js/dependencies/messi.min.css" rel="stylesheet">
+        <link href="ext/angular-snap.min.css" rel="stylesheet">
         
-        <link href="../js/dependencies/messi.min.css" rel="stylesheet">
-        <script src="http://openlayers.org/en/v3.1.1/build/ol.js" type="text/javascript"></script>
-        <script src="js/angular.min.js"></script>
-        <script src="js/app.js"></script>
          <!-- bootstrap-datetimepicker -->
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,14 +20,29 @@
 <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 <![endif]-->
     </head>
-    <body ng-controller="personController">
-        <div class="header" >
+    <body ng-cloak ng-controller="rumController" >
+        <snap-drawer >
+            <ul >
+                <li><a href="javascript:void(0)" snap-toggle ng-click="selectMenu('showMilitancia');">Militantes</a></li>
+                <li style="display:{{showMenu}}">Reportes
+                    <ul><a href="javascript:void(0)" ng-click="selectMenu('showReportes');" snap-toggle>Por Delegacion</a></ul>
+                    <ul><a href="javascript:void(0)" ng-click="selectMenu('showReportes');" snap-toggle>Por Sección</a></ul>
+                </li>
+
+            </ul>
+        </snap-drawer>
+        <snap-content snap-options="opts">
+           
+        <div class="header" ng-cloak>
             <div class="container" >
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-1" ><button snap-toggle snap-unsafe="true"class="btn btn-menu"  ><img src="images/icon-menu.png"></button></div>
+                    <div class="col-md-4">
+
                         <!-- Logo -->
                         <div class="logo">
-                            <h1><a href="index.html">Registro de Militancia </a></h1>
+                            
+                            <h1 ><a href="index.html">Registro de Militancia </a></h1>
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -55,10 +68,7 @@
                                     <li class="dropdown">
                                         <a href="#" ><img  src="images/adduser.png" style="height:30px;width:30px;" ng-click="loadCreate()">	<img onclick="location.href='/person/export'" src="images/excel.png" tooltip="Ver Registros" style="height:30px;width:30px;"/></a>
 
-                                        <ul class="dropdown-menu animated fadeInUp">
-                                            <li><a href="profile.html">Profile</a></li>
-                                            <li><a href="login.html">Logout</a></li>
-                                        </ul>
+                                        
                                     </li>
                                 </ul>
                             </nav>
@@ -67,342 +77,16 @@
                 </div>
             </div>
         </div>
-
-        <div class="page-content" style="text-align:center;">
-
-            <img src="images/loading.gif" ng-show="showLoader">
-            <div class="content-box-large" ng-show="showTable">
-                <div class="panel-heading">
-                    <div class="panel-title">{{persons.length}} Resultados</div>
-                </div>
-                <div class="panel-body">
-
-                    <table  cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dataTable" id="example" aria-describedby="example_info">
-                        <thead>
-
-                            <tr role="row">
-                                <th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 100px;">Nombre</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 100px;">Apellido Paterno</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 100px;">Apellido Materno</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 110px;">Clave de Elector</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 110px;">Registrar</th>
-                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 110px;">Localizar</th></tr>
-                        </thead>
-
-                        <tbody role="alert" aria-live="polite" aria-relevant="all" ng-repeat="person in currPersons | orderBy:'fechaNaciClaveElectoral'">
-                            <tr class="gradeA odd">
-                                <td class=" sorting_1">{{person.nombre.replace("�","Ñ")}}</td>
-                                <td class=" ">{{person.apellidoPaterno.replace("�","Ñ")}}</td>
-                                <td class=" ">{{person.apellidoMaterno.replace("�","Ñ")}}</td>
-                                <td class="center ">{{person.claveCompleta}}</td>
-                                <td class="center "><button ng-click="mostrarRegistro(person);" ng-hide="{{person.registrado==1}}">Registrar</button></td>
-                                <td class="center "><button ng-click="localizarPersona(person);" >Localizar</button></td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                   <div id="map" class="map"></div>
-
-                </div>
+        <div>
+            <div class="page-content" style="text-align:center;">
+                 <img src="images/loading.gif" ng-show="showLoader" >
+                <rum-militancia persons="currPersons" ng-show="showMilitancia"></rum-militancia>
+                <rum-reportes  ng-show="showReportes"></rum-reportes>
+                
             </div>
-            <div ng-show="showCreate">
-
-                <div class="content-box-large">
-                    <div class="panel-heading">
-                        <div class="panel-title">Agregar Persona</div>
-
-                        <div class="panel-options">
-                            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-remove" ng-click="showCreate=false"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <form class="form-horizontal" role="form" ng-submit="create()">
-
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Nombre</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3"  required placeholder="Nombre" ng-model="newPerson.nombre">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Apellido Paterno</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required placeholder="Apellido Paterno" ng-model="newPerson.apellidoPaterno">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Apellido Materno</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required placeholder="Apellido Materno" ng-model="newPerson.apellidoMaterno">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Clave de Elector</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required pattern="{18,18}" maxlength=18 placeholder="Clave de Elector" title="Longitud de 18 caracteres."ng-model="newPerson.claveElector">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">OCR</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required pattern="\d*"  placeholder="Numeral de atrás de la credencial" title="Escribe sólo numeros. " ng-model="newPerson.consecutivo">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Seccion</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required pattern="\d{4,4}" maxlength=4 placeholder="Seccion" title="Escribe sólo numeros. Longitud de 4 caracteres." ng-model="newPerson.seccion">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Colonia</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required  placeholder="Colonia" title="Escribe sólo numeros. Longitud de 6 caracteres." ng-model="newPerson.colonia">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Delegación</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputEmail3" required  placeholder="Delegación" title="Escribe sólo numeros. Longitud de 6 caracteres." ng-model="newPerson.descripcionGeoreferencia">
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Registrar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
+            
         </div>
-
-        <div id="formRegistro" ng-show="showformRegistro" >
-            <div class="content-box-large">
-                    <div class="panel-heading">
-                        <div class="panel-title"><h2>Registro de Militante</h2></div>
-
-                        <div class="panel-options">
-                            <a href="#" data-rel="collapse"><i class="glyphicon glyphicon-remove" ng-click="showformRegistro=false;showTable=true;"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-1 control-label">Tipo de Registro</label>
-                                <div class="col-sm-2">
-                                    <select ng-model="tipoRegistro" class="form-control" ng-click="selectedPerson.asambleas = [{}];selectedPerson.dirigencias = [{}]">
-                                        <option value=1>Militante</option>
-                                        <option value=2>Cuadro</option>
-                                        <option value=3>Dirigente</option>
-                                    </select>
-                                </div>
-                            </div>
-                        <form class="form-horizontal" role="form" ng-submit="registrar()" ng-show="tipoRegistro>0" >
-                            <br><br>
-                            <label for="" class="col-sm-4 "><h3>Datos Generales</h3></label>
-                            <div class="row"></div>
-                            <div class="form-group">
-                                <label for="" class="col-sm-1 control-label">Telefono de Casa</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control"  required pattern="\d*" placeholder="Ej. 5554443322" ng-model="selectedPerson.telefonoCasa">
-                                </div>
-                                
-                                <label for="" class="col-sm-1 control-label">Celular</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. 5554443322" ng-model="selectedPerson.celular">
-                                </div>
-                                
-                                <label for="" class="col-sm-1 control-label">Correo Electrónico</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. alguien@example.com" ng-model="selectedPerson.email">
-                                </div>
-                                
-                                
-                            </div>
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                <label for="" class="col-sm-1 control-label">Telefono de Oficina</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control"  required pattern="\d*" placeholder="Ej. 5554443322" ng-model="selectedPerson.telefonoOficina">
-                                </div>
-                                
-                                
-                                
-                                <label for="" class="col-sm-1 control-label">Nextel</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. alguien@example.com" ng-model="selectedPerson.nextel">
-                                </div>
-                                
-                                
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="" class="col-sm-1 control-label">Facebook</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. Juan Perez" ng-model="selectedPerson.facebook">
-                                </div>
-                                
-                                <label for="" class="col-sm-1 control-label">Twitter</label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control" placeholder="Ej. @alguien" ng-model="selectedPerson.twitter">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="" class="col-sm-1 control-label">Estado Civil</label>
-                                <div class="col-sm-2">
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="SOLTERO">Soltero&nbsp;&nbsp;
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="CASADO">Casado&nbsp;&nbsp;
-                                    <input type="radio" name="edoCivil" ng-model="selectedPerson.estadoCivil" value="UNION LIBRE">Union Libre&nbsp;&nbsp;
-                                </div>
-                            </div>
-                            <div class="row"/>
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                <label for="" class="col-sm-1 control-label">Sector ú Organización</label>
-                                <div class="col-sm-2">
-                                    <select ng-model="selectedPerson.sectorOrganizacion" class="form-control">
-                                        
-                                        <optgroup label="Organizaciones">
-                                            <option value="MOVIMIENTO TERRITORIAL">MOVIMIENTO TERRITORIAL</option>
-                                            <option value="ORGANISMO NACIONAL DE MUJERES PRIISTAS">ORGANISMO NACIONAL DE MUJERES PRIISTAS</option>
-                                            <option value="RED JÓVENES POR MÉXICO">RED JÓVENES POR MÉXICO</option>
-                                            <option value="ASOCIACIÓN NACIONAL DE LA UNIDAD REVOLUCIONARIA, A.C.">ASOCIACIÓN NACIONAL DE LA UNIDAD REVOLUCIONARIA, A.C.</option>
-                                        </optgroup>
-                                        <optgroup label="Sectores">
-                                            <option value="SECTOR AGRARIO">SECTOR AGRARIO</option>
-                                            <option value="SECTOR OBRERO">SECTOR OBRERO</option>
-                                            <option value="SECTOR POPULAR">SECTOR POPULAR</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                                
-                                <label for="" class="col-sm-1 control-label">Cargo Actual</label>
-                                <div class="col-sm-2">
-                                    <select ng-model="selectedPerson.cargoActual" class="form-control" placeholder="Selecciona...">
-                                        
-                                            <option value="CARGO UNO">CARGO UNO</option>
-                                            <option value="CARGO DOS">CARGO DOS</option>
-                                            <option value="CARGO TRES">CARGO TRES</option>
-                                        
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                
-                                <label for="" class="col-sm-1 control-label">Fecha de Afiliación</label>
-                                <div class="col-sm-2">
-                                <input type="date" class="form-control">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                
-                                <label for="" class="col-sm-8"><h3>Responsabilidad en Órganos de Dirección Ejecutivos</h3></label>
-                                <div class="row"></div>
-                                <label for="" class="col-sm-1 control-label">Asamblea</label>
-                                <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Nacional">Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Estatal/DF">Estatal/DF
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Municipal/Delegacional">Municipal/Delegacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoAsamblea" name="tipoAsamblea" value="Seccional">Seccional
-                                </div>
-                                
-                                <div ng-repeat="asa in selectedPerson.asambleas">
-                                    <div class="row"></div>
-                                    <label for="" class="col-sm-1 control-label"></label>
-                                    <div class="col-sm-2">
-                                        <input type="text"  ng-model="asa.nombre" placeholder="nombre" class="form-control">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="date" ng-model="asa.fecha" class="form-control">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-plus-sign" ng-click="selectedPerson.asambleas.push({})"></i></a>
-                                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-remove-sign" ng-click="selectedPerson.asambleas.splice($index,1)"></i></a>
-                                    </div>
-                                </div>
-                                
-                                <div class="row"></div>
-                                
-                                <label for="" class="col-sm-1 control-label">Consejo Politico</label>
-                                <div class="col-sm-10"><br>
-                                    <input type="radio"  value="Nacional">Nacional
-                                    <input type="radio"  value="Estatal/DF">Estatal/DF
-                                    <input type="radio"  value="Municipal/Delegacional">Municipal/Delegacional
-                                </div>
-                                
-                                <div class="row"></div>
-                                <label for="" class="col-sm-1 control-label">Comisión Politica Permanente</label>
-                                <div class="col-sm-1" style="vertical-align: middle;">
-                                    <br>
-                                    <input type="checkbox" ng-model="selectedPerson.compolper" style="vertical-align: middle;" >
-                                    
-                                </div>
-                               
-                                
-                            </div>
-                            
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                
-                                <label for="" class="col-sm-8 "><h3>Responsabilidad en Órganos de Dirección Deliberativos</h3></label>
-                                <div class="row"></div>
-                                <label for="" class="col-sm-1 control-label">Dirigencia</label>
-                                <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Nacional">Comité Directivo Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Estatal/DF">Comité Directivo Estatal/DF
-                                    <input type="radio"  ng-model="selectedPerson.tipoDirigencia" name="tipoAsamblea" value="Comité Directivo Municipal/Delegacional">Comité Directivo Municipal/Delegacional
-                                </div>
-                                
-                                <div ng-repeat="asa in selectedPerson.dirigencias">
-                                    <div class="row"></div>
-                                    <label for="" class="col-sm-1 control-label"></label>
-                                    <div class="col-sm-2">
-                                        <input type="text"  ng-model="asa.nombre" placeholder="nombre" class="form-control">
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <input type="date" ng-model="asa.fecha" class="form-control">
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-plus-sign" ng-click="selectedPerson.dirigencias.push({})"></i></a>
-                                        <a href="javascript:void(0);"><i class="glyphicon glyphicon-remove-sign" ng-click="selectedPerson.dirigencias.splice($index,1)"></i></a>
-                                    </div>
-                                </div>
-                                
-                                
-                               
-                                
-                            </div>
-                            
-                            <div class="form-group" ng-if="tipoRegistro==3">
-                                
-                                <label for="" class="col-sm-8"><h3>Responsabilidad en Órganos de Defensoría y Jurisdiccionales</h3></label>
-                                <div class="row"></div>
-                                <label for="" class="col-sm-1 control-label">Justicia Partidaria</label>
-                                <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="Comisión Nacional">Comisión Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoJusticiaPartidaria" name="tipoJusticiaPartidaria" value="Comision Estatal/DF">Comision Estatal/DF
-                                </div>
-                                
-                                <div class="row"></div>
-                                <label for="" class="col-sm-1 control-label">Defensoría de los derechos de los militantes</label>
-                                <div class="col-sm-6">
-                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="Defensoría Nacional">Defensoría Nacional
-                                    <input type="radio"  ng-model="selectedPerson.tipoDefensoria" name="tipoDefensoria" value="Defensoría Estatal/DF">Defensoría Estatal/DF
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="col-sm-offset-5 col-sm-2">
-                            <input type="submit" value="Registrar" class="btn btn-primary">
-                            </div>
-                        </form>
-                        
-                </div>
-            </div>
-        </div>
+        
         <footer>
             <div class="container">
 
@@ -413,6 +97,7 @@
             </div>
         </footer>
 
+
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="js/jquery.js"></script>
         
@@ -422,6 +107,17 @@
         <script src="../js/dependencies/messi.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="http://openlayers.org/en/v3.1.1/build/ol.js" type="text/javascript"></script>
+        <script src="ext/snap.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="ext/angular-snap.min.js" type="text/javascript"></script>
+        <script src="js/modules/rum-militancia.js"></script>
+        <script src="js/modules/rum-reportes.js"></script>
+        <script src="js/modules/rum-test.js"></script>
+        <script src="js/app.js"></script>
         <script src="js/custom.js"></script>
+
+        
+        </snap-content>
     </body>
 </html>

@@ -669,3 +669,13 @@ body {
         cursor: hand;   
     }
 }
+
+.btn-menu {
+    margin-top: 5px;
+    
+}
+.btn-menu img{
+    height: 30px;
+    width: 30px;
+    
+}

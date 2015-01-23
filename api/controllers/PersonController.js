@@ -199,6 +199,8 @@ module.exports = {
         			for(var i in data.features){
         				var nombre = data.features[i].properties.NOMBRE;
         				console.log(per.calle+">>>"+nombre )
+        				if(per.calle == null || nombre == null)
+        					return res.json(404,{msg:"PERSONA SIN CALLE"})
         				var currdistance = new Levenshtein(nombre,per.calle).distance;
         				if(currdistance < lowestLev){
         					lowestLev = currdistance;
@@ -230,7 +232,7 @@ module.exports = {
         						}
         					}
         					if(found==false)
-        						res.json({msg:"NOT FOUND"});
+        						res.json(data.features[0]);
         				});
         			//}
 	        		
