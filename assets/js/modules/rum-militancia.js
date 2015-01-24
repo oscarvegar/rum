@@ -1,6 +1,6 @@
 angular.module('rum-militancia', [])
 
-.controller('militanciaController',["$scope","$http",function($scope,$http) {
+.controller('militanciaController',["$scope","$http","$timeout",function($scope,$http,$timeout) {
     $scope.showTable= false;
     $scope.showLoader= false;
     $scope.showCreate= false;
@@ -21,6 +21,10 @@ angular.module('rum-militancia', [])
         $scope.selectedPerson.dirigencias = [{}];
         $scope.hideAll();
         $scope.showformRegistro = true;
+        $timeout(function(){
+        	$('#slcTipoMilitante').focus();
+        },200);
+         
         
     };
     
@@ -81,6 +85,7 @@ angular.module('rum-militancia', [])
 
 	$scope.localizarPersona = function(person){
 		console.log(person);	
+		document.getElementById('map').scrollIntoView()
 		$http.post('/person/localizar/'+person["id"]).success(function(data) {
 			console.log(data)
 			console.log(data.properties.CVEPREDIAL)
@@ -105,6 +110,7 @@ angular.module('rum-militancia', [])
 	        })
 	      });
 
+	        
 		});
 
 
