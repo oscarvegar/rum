@@ -136,6 +136,8 @@ module.exports = {
 			res.setHeader("Content-Encoding", "UTF-8");
 			res.setHeader("Content-Type", "text/csv; charset=UTF-8");
 			res.setHeader("Content-Disposition", "attachment; filename=Militantes.csv");
+			
+			
 			for(var i=0;i<pers.length;i++){
 				var curr = pers[i];
 				var cve = curr.claveCompleta;
@@ -150,7 +152,8 @@ module.exports = {
 				+cve+"\t"
 				+curr.seccion+"\t"
 				+ocr+"\t"
-				+moment(curr.fechaNacimiento).format('DD-MM-YYYY')+"\t"
+				//+moment(curr.fechaNacimiento).format('DD-MM-YYYY')+"\t"
+				+curr.fechaNacimiento+"\t"
 				+curr.sexo+"\t"
 				+curr.nombre+"\t"
 				+curr.apellidoPaterno+"\t"
@@ -164,10 +167,18 @@ module.exports = {
 				+curr.colonia+"\t"
                 +curr.celular+"\t"
                 +curr.email+"\t"
-                +moment().format('DD-MM-YYYY')+"\t"
-                +curr.sectorOrganizacion!=null?curr.sectorOrganizacion:"N/A"+"\t"
-                +curr.cargoActual!=null?curr.cargoActual:"N/A"+"\t"
-                +"N/A"+"\t"
+                +moment().format('DD-MM-YYYY')+"\t";
+                if(curr.sectorOrganizacion===undefined)
+                	respuesta+="N/A"+"\t";
+                else
+                	respuesta+=curr.sectorOrganizacion+"\t";
+                if(curr.cargoActual===undefined)
+                	respuesta+="N/A"+"\t";
+                else
+                	respuesta+=curr.cargoActual+"\t";
+
+                
+                respuesta+="N/A"+"\t"
                 +"a.melgoza"+"\t"
                 +moment().format('hh:mm:ss')+"\t"
                 +'ACTIVO';
@@ -208,6 +219,7 @@ module.exports = {
                 
 				
 			};
+			console.log(respuesta);
             respuesta = quitacomas(respuesta);
             console.log(respuesta);
 			res.end(respuesta);
